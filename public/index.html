@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insights Carousel Generator</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="card">
+    <header>
+      <h1>Insights Carousel Generator</h1>
+      <p class="sub">Paste an insightsdigest.sg article URL → preview the 4 slides → download the ZIP.</p>
+    </header>
+
+    <form id="gen" novalidate>
+      <label for="url">Article URL</label>
+      <input
+        id="url"
+        name="url"
+        type="url"
+        required
+        placeholder="https://www.insightsdigest.sg/article/..."
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button id="submit" type="submit">Generate</button>
+    </form>
+
+    <p id="status" class="status" role="status" aria-live="polite" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <section id="result" hidden aria-live="polite">
+      <h2 id="title" class="title"></h2>
+      <div id="grid" class="grid"></div>
+      <a id="download" class="download" download>⬇ Download ZIP</a>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

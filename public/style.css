@@ -1,0 +1,125 @@
+/* Palet brand selaras src/templates.js: teal #0E3D38, cream. */
+:root {
+  --teal: #0E3D38;
+  --teal-light: #155049;
+  --cream: #D7D1C0;
+  --bg: #ECE7D9;
+  --ink: #1c1c1a;
+  --muted: #5d6460;
+  --danger: #9b2c2c;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 20px;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.card {
+  width: 100%;
+  max-width: 560px;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 40px rgba(14, 61, 56, 0.12);
+  padding: 32px;
+}
+
+header h1 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+  color: var(--teal);
+}
+
+.sub {
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+form { display: flex; flex-direction: column; gap: 10px; }
+
+label { font-weight: 600; font-size: 0.9rem; color: var(--teal); }
+
+input[type="url"] {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  border: 1.5px solid var(--cream);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+input[type="url"]:focus { border-color: var(--teal); }
+
+button, .download {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  padding: 12px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--teal);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+button:hover, .download:hover { background: var(--teal-light); }
+button:disabled { opacity: 0.55; cursor: progress; }
+
+.status, .error {
+  margin: 18px 0 0;
+  font-size: 0.95rem;
+}
+.status { color: var(--muted); }
+.status::before { content: "⏳ "; }
+.error {
+  color: var(--danger);
+  background: #fdeaea;
+  border: 1px solid #f3c6c6;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+#result { margin-top: 26px; }
+.title {
+  font-size: 1.05rem;
+  color: var(--teal);
+  margin: 0 0 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.grid figure { margin: 0; }
+.grid img {
+  width: 100%;
+  aspect-ratio: 1080 / 1350;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--cream);
+  background: var(--bg);
+  display: block;
+}
+.grid figcaption {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.download { width: 100%; }

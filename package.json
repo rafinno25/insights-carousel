@@ -1,0 +1,21 @@
+{
+  "name": "insights-carousel",
+  "version": "1.0.0",
+  "description": "Generate a 4-image carousel (Cover, Slide 1, Slide 2, CTA) + ZIP from an insightsdigest.sg article URL.",
+  "type": "module",
+  "bin": {
+    "insights-carousel": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "web": "node server.js",
+    "postinstall": "playwright install chromium"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "playwright": "^1.49.0"
+  }
+}
