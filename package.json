@@ -9,13 +9,15 @@
   "scripts": {
     "start": "node src/index.js",
     "web": "node server.js",
-    "postinstall": "playwright install chromium"
+    "postinstall": "node -e \"if(!process.env.VERCEL){require('child_process').execSync('playwright install chromium',{stdio:'inherit'})}\""
   },
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
+    "@sparticuz/chromium": "149.0.0",
     "archiver": "^7.0.1",
-    "playwright": "^1.49.0"
+    "playwright": "^1.49.0",
+    "playwright-core": "^1.61.0"
   }
 }

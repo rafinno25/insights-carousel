@@ -1,9 +1,28 @@
 // Render: HTML (data-URI mandiri) -> buffer JPG via Playwright/Chromium headless.
 
-import { chromium } from 'playwright';
+import { chromium } from 'playwright-core';
+
+// Di lingkungan serverless (Vercel/Lambda) tidak ada Chromium bawaan, jadi kita
+// pakai @sparticuz/chromium (binary ringan, dikompres) + playwright-core.
+// Di lokal kita pakai Chromium yang sudah di-install oleh paket `playwright`.
+const IS_SERVERLESS = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+
+async function launchBrowser() {
+  if (IS_SERVERLESS) {
+    const sparticuz = (await import('@sparticuz/chromium')).default;
+    return chromium.launch({
+      args: sparticuz.args,
+      executablePath: await sparticuz.executablePath(),
+      headless: true,
+    });
+  }
+  // Lokal: Chromium bawaan `playwright` (di-resolve lewat playwright-core).
+  const { chromium: local } = await import('playwright');
+  return local.launch();
+}
 
 export async function renderSlides(htmlBySlide, { width = 1080, height = 1350, scale = 2 } = {}) {
-  const browser = await chromium.launch();
+  const browser = await launchBrowser();
   try {
     const context = await browser.newContext({
       viewport: { width, height },

@@ -1,5 +1,7 @@
 // Logika frontend: kirim URL ke /api/generate, tampilkan pratinjau 4 slide,
-// lalu arahkan tombol unduh ke /api/download/<id>.
+// lalu bungkus 4 gambar itu menjadi ZIP di sisi browser (JSZip) saat tombol unduh ditekan.
+// Pendekatan client-side ini bebas-state sehingga jalan baik di server lokal maupun
+// di Vercel serverless (yang tidak bisa menyimpan hasil antar-request).
 
 const form = document.getElementById('gen');
 const urlInput = document.getElementById('url');
@@ -12,6 +14,8 @@ const gridEl = document.getElementById('grid');
 const downloadEl = document.getElementById('download');
 
 const RENDER_TIMEOUT_MS = 90_000; // render Playwright bisa beberapa detik
+
+let current = null; // { slug, slides: [{ name, dataUri }] }
 
 function show(el, text) {
   if (text !== undefined) el.textContent = text;
@@ -62,7 +66,8 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-function renderResult({ title, slides, id }) {
+function renderResult({ title, slug, slides }) {
+  current = { slug: slug || 'carousel', slides };
   titleEl.textContent = title || '';
   gridEl.replaceChildren();
   for (const slide of slides) {
@@ -76,6 +81,34 @@ function renderResult({ title, slides, id }) {
     fig.append(img, cap);
     gridEl.append(fig);
   }
-  downloadEl.href = `/api/download/${id}`;
   show(resultEl);
 }
+
+downloadEl.addEventListener('click', async () => {
+  if (!current) return;
+  downloadEl.disabled = true;
+  const original = downloadEl.textContent;
+  downloadEl.textContent = 'Membungkus ZIP…';
+  try {
+    const zip = new JSZip();
+    for (const slide of current.slides) {
+      const base64 = slide.dataUri.split(',')[1];
+      zip.file(slide.name, base64, { base64: true });
+    }
+    const blob = await zip.generateAsync({
+      type: 'blob',
+      compression: 'DEFLATE',
+      compressionOptions: { level: 9 },
+    });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `carousel-${current.slug}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+  } finally {
+    downloadEl.disabled = false;
+    downloadEl.textContent = original;
+  }
+});
